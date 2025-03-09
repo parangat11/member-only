@@ -1,0 +1,22 @@
+{
+  "name": "member-only",
+  "version": "1.0.0",
+  "description": "We're gonna be using local authentication strategy provided by the Passport middleware and Potgresql DB to store the usernames and passwords.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.13.3"
+  }
+}
