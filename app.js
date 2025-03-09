@@ -5,8 +5,10 @@ const { Pool } = require('pg')
 const session = require('express-session')
 const indexRouter = require('./routes/indexRouter')
 const LocalStrategy = require('passport-local').Strategy
+const pgSession = require('connect-pg-simple')(session)
+const { table } = require('node:console')
 
-const pool = new Pool({
+const pgPool = new Pool({
     connectionString: process.env.DATABASE_URL
 })
 
@@ -16,8 +18,13 @@ app.set('view engine', 'ejs')
 
 app.use(session({
     secret: process.env.SECRET,
+    store: new pgSession({
+        pool: pgPool,
+        tableName: 'session_data',
+        createTableIfMissing: true
+    }),
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         maxAge: 20 * 1000
     }
