@@ -27,7 +27,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 20 * 1000
+        maxAge: 30 * 24 * 60 * 60 * 1000
     }
 }))
 app.use(passport.session())
@@ -55,8 +55,17 @@ app.post('/login', passport.authenticate('local', {
     failureRedirect: '/404'
 }))
 
+app.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+        if(err) {
+            return next(err)
+        }
+        res.redirect('/')
+    })
+})
+
 app.get('/', (req, res) => {
-    res.render('index')
+    res.render('index', { user: req.user })
 })
 
 const PORT = process.env.PORT || 3000
