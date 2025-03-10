@@ -4,6 +4,7 @@ const path = require('node:path')
 const { Pool } = require('pg')
 const session = require('express-session')
 const indexRouter = require('./routes/indexRouter')
+const signupRouter = require('./routes/signupRouter')
 const pgSession = require('connect-pg-simple')(session)
 const bcrypt = require('bcryptjs')
 require('./config/passport')
@@ -33,26 +34,14 @@ app.use(session({
 app.use(passport.session())
 app.use(express.urlencoded({ extended: false }))
 
-app.get('/sign-up', (req, res) => {
-    res.render('signup')
-})
-app.post("/sign-up", async (req, res, next) => {
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.pw, 10);
-        await pgPool.query("insert into users (firstname, lastname, email, password) values ($1, $2, $3, $4)", [req.body.firstName, req.body.lastName, req.body.userMail, hashedPassword]);
-        res.redirect("/");
-    } catch (error) {
-        console.error(error);
-        next(error);
-    }
-});   
+app.use('/sign-up', signupRouter)   
 
 app.get('/login', (req, res) => {
     res.render('login')
 })
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/404'
+    failureRedirect: '/login-failure'
 }))
 
 app.get('/logout', (req, res, next) => {

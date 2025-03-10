@@ -1,5 +1,5 @@
 const passport = require('passport')
-const pool = require('./db')
+const pool = require('./pool')
 const bcrypt = require('bcryptjs')
 const LocalStrategy = require('passport-local').Strategy
 
