@@ -1,7 +1,7 @@
-// const db = require('./db/queries')
+const indexGet = (req, res) => {
+    res.render('index', { user: req.user })
+}
 
-// async function
-
-// module.exports = {
-//     indexGet
-// }
+module.exports = {
+    indexGet
+}

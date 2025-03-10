@@ -53,9 +53,7 @@ app.get('/logout', (req, res, next) => {
     })
 })
 
-app.get('/', (req, res) => {
-    res.render('index', { user: req.user })
-})
+app.use('/', indexRouter)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
