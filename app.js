@@ -5,8 +5,9 @@ const { Pool } = require('pg')
 const session = require('express-session')
 const indexRouter = require('./routes/indexRouter')
 const signupRouter = require('./routes/signupRouter')
+const loginRouter = require('./routes/loginRouter')
+const logoutRouter = require('./routes/logoutRouter')
 const pgSession = require('connect-pg-simple')(session)
-const bcrypt = require('bcryptjs')
 require('./config/passport')
 
 const pgPool = new Pool({
@@ -35,23 +36,9 @@ app.use(passport.session())
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/sign-up', signupRouter)   
+app.use('/login', loginRouter)
 
-app.get('/login', (req, res) => {
-    res.render('login')
-})
-app.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login-failure'
-}))
-
-app.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if(err) {
-            return next(err)
-        }
-        res.redirect('/')
-    })
-})
+app.use('/logout', logoutRouter)
 
 app.use('/', indexRouter)
 
